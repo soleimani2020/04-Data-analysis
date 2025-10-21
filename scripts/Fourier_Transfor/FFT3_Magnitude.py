@@ -38,7 +38,7 @@ for index, row in df.iterrows():
     # (input) Real → (output) Fourier 
     fft_result = np.fft.fft(row.values)
     #print("fft_result:\n",fft_result)
-    magnitude = np.abs(fft_result)
+    magnitude = np.abs(fft_result)  # fft_result.real 
     ##magnitude = magnitude**2
     #print("magnitude:\n",magnitude)
     magnitude_sorted = magnitude[sorted_idx]
