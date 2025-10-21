@@ -15,7 +15,8 @@ This project computes **FFT magnitudes/real/imaginary**, **autocorrelation funct
 - ✅ Saves results to CSV/TXT files (`fft_magnitudes_all.csv`, `relaxation_times.txt`)  
 - ✅ Generates plots:  
   - **Mean FFT magnitude vs wave vector**  
-  - **Autocorrelation with exponential fit** per mode  
+  - **Autocorrelation with exponential fit** per mode
+  - **Mode versus time** per mode 
 
 ---
 
