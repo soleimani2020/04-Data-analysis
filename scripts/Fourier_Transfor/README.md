@@ -1,7 +1,7 @@
 # 📊 FFT & Autocorrelation Analysis for Molecular Dynamics
 
 A Python script to **analyze fluctuation modes and relaxation times** from molecular dynamics (MD) simulation data.  
-This project computes **FFT magnitudes**, **autocorrelation functions**, and **relaxation times** for per-segment or per-mode data.
+This project computes **FFT magnitudes/real/imaginary**, **autocorrelation functions**, and **relaxation times** for per-segment or per-mode data.
 
 ---
 
