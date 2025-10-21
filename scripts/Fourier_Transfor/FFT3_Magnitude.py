@@ -38,7 +38,7 @@ for index, row in df.iterrows():
     # (input) Real → (output) Fourier 
     fft_result = np.fft.fft(row.values)
     #print("fft_result:\n",fft_result)
-    magnitude = np.abs(fft_result)  # fft_result.real 
+    magnitude = np.abs(fft_result)
     ##magnitude = magnitude**2
     #print("magnitude:\n",magnitude)
     magnitude_sorted = magnitude[sorted_idx]
@@ -268,6 +268,135 @@ np.savetxt('relaxation_times.txt', results, fmt='%s',
 
 
 
+
+
+
+
+
+
+# List to store sorted magnitudes per row
+fft_magnitudes_sorted = []
+
+for index, row in df.iterrows():
+    #print("row.values:\n",row.values)
+    # np.fft.fft
+    # Converts a time-domain signal to frequency domain
+    # (input) Real → (output) Fourier 
+    fft_result = np.fft.fft(row.values)
+    #print("fft_result:\n",fft_result)
+    magnitude = np.abs(fft_result)
+    #print("magnitude:\n",magnitude)
+    magnitude_sorted = magnitude[sorted_idx]
+    #print("magnitude_sorted:\n",magnitude_sorted)
+    fft_magnitudes_sorted.append(magnitude_sorted)
+    # plt.figure(figsize=(6,4))
+    # plt.stem(frequencies_sorted, magnitude_sorted, basefmt=" ")
+    # plt.title(f'FFT Magnitude vs Wave vector (Conf {index})')
+    # plt.xlabel('Wave_vector')
+    # plt.ylabel('Magnitude')
+    # plt.xlim(-0.5, 0.5)
+    # plt.tight_layout()
+    # filename = f"fft_magnitude_row_{index}.png"
+    # plt.savefig(filename)
+    # plt.show() 
+    
+
+
+    
+
+fft_real_parts_sorted = []
+
+for index, row in df.iterrows():
+    signal = row.values
+    N = len(signal)
+    # Perform FFT
+    fft_result = np.fft.fft(signal)
+    #print("fft_result2:\n",fft_result)
+    real_part_sorted = fft_result.real
+    #print("real_part_sorted:\n",real_part_sorted)
+    real_part_sorted = real_part_sorted[sorted_idx]
+    fft_real_parts_sorted.append(real_part_sorted)    
+    # plt.figure(figsize=(6,4))
+    # plt.stem(frequencies_sorted, magnitude_sorted, basefmt=" ")
+    # plt.title(f'Real Part of FFT vs Wave Vector (Conf {index})')
+    # plt.xlabel('Wave_vector')
+    # plt.ylabel('Real(FFT)')
+    # plt.xlim(-0.5, 0.5)
+    # plt.tight_layout()
+    # filename = f"fft_real_row_{index}.png"
+    # plt.savefig(filename)
+    # plt.show()   
+
+
+# Convert list of arrays into a new DataFrame
+fft_magnitude_df = pd.DataFrame(fft_magnitudes_sorted, columns=[f'q:{freq:.3f}' for freq in frequencies_sorted])
+#print("New DataFrame with sorted FFT magnitudes for each wave vector:\n", fft_magnitude_df)
+fft_magnitude_df.to_csv('fft_magnitude_results.csv', index=False)
+
+
+for column in fft_magnitude_df.columns:
+    plt.figure()
+    plt.plot(fft_magnitude_df[column])
+    plt.title(f'FFT Magnitude for  {column}')
+    plt.xlabel('Frame number')
+    plt.ylabel('Magnitude')
+    plt.tight_layout()
+    # Clean the column name for a valid filename
+    safe_column_name = column.replace(":", "_").replace(".", "")
+    plt.savefig(f'{safe_column_name}.png')  # Save plot as image
+    plt.close()  # Close the figure to avoid memory issues
+
+
+
+
+plt.figure(figsize=(10, 6))
+
+# Plot all columns in the same figure
+for column in fft_magnitude_df.columns:
+    plt.plot(fft_magnitude_df[column])
+
+plt.title('FFT Magnitude for All Wave vectors')
+plt.xlabel('Frame number')
+plt.ylabel('Magnitude')
+plt.legend(loc='upper right', fontsize='small')  # Show legend with column names
+plt.tight_layout()
+plt.savefig('fft_all_columns.png')
+plt.show()
+
+
+# Select columns starting from index 3
+selected_columns = fft_magnitude_df.columns[3:]
+
+# Create subplots
+n_cols = 2  # for example
+n_rows = int(np.ceil(len(selected_columns) / n_cols))
+fig, axs = plt.subplots(n_rows, n_cols, figsize=(n_cols * 4, n_rows * 3))
+axs = axs.flatten()  # Flatten in case it's a 2D array
+
+for i, column in enumerate(selected_columns):
+    data = fft_magnitude_df[column].dropna()
+    mu, std = norm.fit(data)
+
+    axs[i].hist(data, bins=30, density=True, alpha=0.6, color='skyblue')
+    xmin, xmax = axs[i].get_xlim()
+    x = np.linspace(xmin, xmax, 100)
+    p = norm.pdf(x, mu, std)
+    axs[i].plot(x, p, 'k', linewidth=2)
+    axs[i].set_title(f'{column}\nμ={mu:.2f}, σ={std:.2f}')
+
+# Hide any unused subplots
+for j in range(i + 1, len(axs)):
+    fig.delaxes(axs[j])
+
+fig.suptitle('Magnitude Gaussian Distributions', fontsize=16)
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+plt.savefig('gaussian_fits_selected_columns.png')
+plt.show()
+
+
+###########
+###########
+###########
 
 
 
