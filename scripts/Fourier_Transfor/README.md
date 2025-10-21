@@ -7,7 +7,7 @@ This project computes **FFT magnitudes/real/imaginary**, **autocorrelation funct
 
 ## ✨ Features
 
-- ✅ Reads **time-series data** from MD simulations (space-separated text files)  
+- ✅ Reads **time-series data** from MD simulations (space-separated text file named mean_segment_df_V2)  
 - ✅ Performs **Fast Fourier Transform (FFT)** to convert data from time to frequency domain  
 - ✅ Computes **mode amplitudes** as a function of wave vector \(q\)  
 - ✅ Calculates **autocorrelation functions** for each mode  
