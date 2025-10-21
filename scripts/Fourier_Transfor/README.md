@@ -16,7 +16,9 @@ This project computes **FFT magnitudes/real/imaginary**, **autocorrelation funct
 - ✅ Generates plots:  
   - **Mean FFT magnitude vs wave vector**  
   - **Autocorrelation with exponential fit** per mode
-  - **Mode versus time** per mode 
+  - **Mode versus time** per mode
+  - **All fluctuation Modes versus time**
+  - **Gaussian distribution of each mode** 
 
 ---
 
