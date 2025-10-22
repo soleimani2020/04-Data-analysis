@@ -20,7 +20,7 @@ print("df:\n", df)
 # Calculate wave_vector and sorting indices for sorting from lowest to highest frequency
 dx = 2.1 # nm
 N = num_columns
-frequencies = np.fft.fftfreq(N, d=dx) * 2 * np.pi  
+frequencies = np.fft.fftfreq(N, d=dx) * 2 * np.pi  # q = 2 * np.pi * frequencies
 sorted_idx = np.argsort(frequencies)
 frequencies_sorted = frequencies[sorted_idx]
 #print("wave_vector:\n", frequencies_sorted)
@@ -30,7 +30,7 @@ frequencies_sorted = frequencies[sorted_idx]
 
 fft_magnitudes_sorted = []
 
-for index, row in df.head(5000).iterrows():
+for index, row in df.iterrows():
     #print("row.values:\n",row.values)
     # np.fft.fft
     # Converts a time-domain signal to frequency domain
@@ -70,7 +70,7 @@ fft_magnitude_df = pd.DataFrame(
 
 #print(fft_magnitude_df)
 
-fft_magnitude_df.to_csv("fft_magnitudes_all.csv", index=False)
+fft_magnitude_df.to_csv("fft_Real_all.csv", index=False)
 
 
 # ---- NEW: Plot q vs mean magnitude ----
@@ -89,6 +89,18 @@ plt.ylabel("Mean Real")
 plt.tight_layout()
 plt.savefig("fft_real_mean_vs_q.png", dpi=300)
 plt.show()
+
+
+# Combine q_values and mean_values into two columns
+data_to_save = list(zip(q_values, mean_values))
+
+# Write to a text file
+with open("fft_real_mean_vs_q.xvg", "w") as f:
+    f.write("# q (1/nm)    Mean Real\n")
+    for q, mean in data_to_save:
+        f.write(f"{q:.6f}    {mean:.6f}\n")
+
+print("Data saved to fft_real_mean_vs_q.txt")
 
 
 # ---------- Autocorrelation Analysis ----------
@@ -278,7 +290,7 @@ for index, row in df.iterrows():
     magnitude = np.abs(fft_result)
     #print("magnitude:\n",magnitude)
     magnitude_sorted = magnitude[sorted_idx]
-    print("magnitude_sorted:\n",magnitude_sorted)
+    #print("magnitude_sorted:\n",magnitude_sorted)
     fft_magnitudes_sorted.append(magnitude_sorted)
     # plt.figure(figsize=(6,4))
     # plt.stem(frequencies_sorted, magnitude_sorted, basefmt=" ")
@@ -321,7 +333,6 @@ for index, row in df.iterrows():
 
 # Convert list of arrays into a new DataFrame
 fft_magnitude_df = pd.DataFrame(fft_real_parts_sorted, columns=[f'q:{freq:.3f}' for freq in frequencies_sorted])
-print("New DataFrame with sorted FFT magnitudes for each wave vector:\n", fft_magnitude_df)
 
 
 
