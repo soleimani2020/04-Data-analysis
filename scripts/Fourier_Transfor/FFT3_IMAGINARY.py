@@ -90,6 +90,18 @@ plt.tight_layout()
 plt.savefig("fft_Imaginary_mean_vs_q.png", dpi=300)
 plt.show()
 
+# Combine q_values and mean_values into two columns
+data_to_save = list(zip(q_values, mean_values))
+
+# Write to a text file
+with open("fft_Img_mean_vs_q.xvg", "w") as f:
+    f.write("# q (1/nm)    Mean Real\n")
+    for q, mean in data_to_save:
+        f.write(f"{q:.6f}    {mean:.6f}\n")
+
+print("Data saved to fft_Img_mean_vs_q.txt")
+
+
 
 # ---------- Autocorrelation Analysis ----------
 
@@ -359,7 +371,7 @@ plt.ylabel('Imaginary')
 plt.legend(loc='upper right', fontsize='small')  # Show legend with column names
 plt.tight_layout()
 plt.savefig('fft_all_columns.png')
-plt.show()
+#plt.show()
 
 
 
@@ -389,7 +401,7 @@ for j in range(i + 1, len(axs)):
 fig.suptitle('Imaginary Gaussian Distributions', fontsize=16)
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 plt.savefig('gaussian_fits_selected_columns_Imaginary.png')
-plt.show()
+#plt.show()
 
 
 
