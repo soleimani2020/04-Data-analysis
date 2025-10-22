@@ -86,10 +86,21 @@ plt.stem(q_values, mean_values, basefmt=" ")
 plt.title("Average FFT Magnitude vs Wave Vector (q)")
 plt.xlabel("Wave Vector q (1/nm)")
 plt.ylabel("Mean Magnitude")
-plt.ylim(0, 50)
+#plt.ylim(0, 50)
 plt.tight_layout()
 plt.savefig("fft_magnitude_mean_vs_q.png", dpi=300)
 plt.show()
+
+# Combine q_values and mean_values into two columns
+data_to_save = list(zip(q_values, mean_values))
+
+# Write to a text file
+with open("fft_mag_mean_vs_q.xvg", "w") as f:
+    f.write("# q (1/nm)    Mean Real\n")
+    for q, mean in data_to_save:
+        f.write(f"{q:.6f}    {mean:.6f}\n")
+
+print("Data saved to fft_real_mean_vs_q.txt")
 
 
 # ---------- Autocorrelation Analysis ----------
